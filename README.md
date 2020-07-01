@@ -1,6 +1,9 @@
 # huawei-map-clustering
 A high performance marker clustering library for Huawei Map
 
+## Motivation
+Why not use [Huawei built in .clusterable(true)](https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/hms-map-drawonthemap#h2-1586915875534)? Because it's very slow for >100 markers, which causes ANRs. But this library can easily handle thousands of markers (the video above demonstrates the sample application with 100 000 markers running on Huawei P40 Lite).
+
 
 ## Integration
 1. Implement `ClusterItem` to represent a marker on the map. The cluster item returns the position of the marker and an optional title or snippet:
@@ -66,8 +69,8 @@ clusterManager.setCallbacks(new ClusterManager.Callbacks<SampleClusterItem>() {
 
 4. To customize the icons create an instance of `IconGenerator` and set it using `ClusterManager.setIconGenerator(...)`. You can also use the default implementation `DefaultIconGenerator` and customize the style of icons using `DefaultIconGenerator.setIconStyle(...)`.
 
-5. Populate ClusterManager with items using `ClusterManager.setItems(...)`:
+5. Populate ClusterManager with items using `ClusterManager.addItems(...)`:
 
 ```java
 List<SampleClusterItem> clusterItems = generateSampleClusterItems();
-clusterManager.setItems(clusterItems);
+clusterManager.addItems(clusterItems);
