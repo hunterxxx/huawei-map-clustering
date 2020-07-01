@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             clusterItems.add(new SampleClusterItem(
                     RandomLocationGenerator.generate(DEUTSCHLAND)));
         }
-        clusterManager.setItems(clusterItems);
+        clusterManager.addItems(clusterItems);
     }
 
     private void setupMapFragment() {

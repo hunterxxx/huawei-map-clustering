@@ -107,15 +107,20 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
     }
 
     /**
-     * Sets items to be clustered thus replacing the old ones.
+     * Add items to be clustered thus replacing the old ones.
      *
      * @param clusterItems the items to be clustered
      */
-    public void setItems(@NonNull List<T> clusterItems) {
+    public void addItems(@NonNull List<T> clusterItems) {
         checkNotNull(clusterItems);
         buildQuadTree(clusterItems);
     }
 
+    /**
+     * Add an item to be clustered thus replacing the old one.
+     *
+     * @param clusterItem the items to be clustered
+     */
     public void addItem(@NonNull T clusterItem) {
         checkNotNull(clusterItem);
         mQuadTree.insert(clusterItem);
