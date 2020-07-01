@@ -1,0 +1,4 @@
+rootProject.name='PushHunter'
+include ':app', ':clusterings'
+include ':clustering'
+include ':mylibrary'
