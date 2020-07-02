@@ -1,4 +1,4 @@
-# huawei-map-clustering
+# Huawei Map Clustering
 A high performance marker clustering library for Huawei Map
 
 <img src="Screenshots/100k.gif" width="320" height="685">
