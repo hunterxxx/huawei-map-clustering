@@ -76,3 +76,8 @@ clusterManager.setCallbacks(new ClusterManager.Callbacks<SampleClusterItem>() {
 ```java
 List<SampleClusterItem> clusterItems = generateSampleClusterItems();
 clusterManager.addItems(clusterItems);
+
+## Show your support
+This project is compeltely open source, feel free to make a pull request or report an issue.
+Give a ⭐️ if this project helped you!
+
