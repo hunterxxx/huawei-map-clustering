@@ -16,8 +16,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static com.huawei.clustering.Preconditions.checkNotNull;
-
 /**
  * Groups multiple items on a map into clusters based on the current zoom level.
  * Clustering occurs when the map becomes idle, so an instance of this class
@@ -80,8 +78,8 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
      * @param huawei the map instance where markers will be rendered
      */
     public ClusterManager(@NonNull Context context, @NonNull HuaweiMap huawei) {
-        checkNotNull(context);
-        mHuaweiMap = checkNotNull(huawei);
+        Preconditions.checkNotNull(context);
+        mHuaweiMap = Preconditions.checkNotNull(huawei);
         mRenderer = new ClusterRenderer<>(context, huawei);
         mQuadTree = new QuadTree<>(QUAD_TREE_BUCKET_CAPACITY);
     }
@@ -92,7 +90,7 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
      * @param iconGenerator the custom icon generator that's used for generating marker icons
      */
     public void setIconGenerator(@NonNull IconGenerator<T> iconGenerator) {
-        checkNotNull(iconGenerator);
+        Preconditions.checkNotNull(iconGenerator);
         mRenderer.setIconGenerator(iconGenerator);
     }
 
@@ -107,27 +105,32 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
     }
 
     /**
-     * Add items to be clustered thus replacing the old ones.
+     * Sets items to be clustered thus replacing the old ones.
      *
      * @param clusterItems the items to be clustered
      */
     public void addItems(@NonNull List<T> clusterItems) {
-        checkNotNull(clusterItems);
+        Preconditions.checkNotNull(clusterItems);
         buildQuadTree(clusterItems);
     }
 
-    /**
-     * Add an item to be clustered thus replacing the old one.
-     *
-     * @param clusterItem the items to be clustered
-     */
-    public void addItem(@NonNull T clusterItem) {
-        checkNotNull(clusterItem);
-        mQuadTree.insert(clusterItem);
+    public void addItem(@NonNull final T clusterItem) {
+        quadTreeWriteLock(new Runnable() {
+            @Override
+            public void run() {
+                Preconditions.checkNotNull(clusterItem);
+                mQuadTree.insert(clusterItem);
+            }
+        });
     }
 
     public void clearItems() {
-        mQuadTree.clear();
+        quadTreeWriteLock(new Runnable() {
+            @Override
+            public void run() {
+                mQuadTree.clear();
+            }
+        });
     }
 
     /**
@@ -142,11 +145,6 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
     @Override
     public void onCameraIdle() {
         cluster();
-    }
-
-    public void setRenderPostProcessor(@NonNull RenderPostProcessor<T> renderPostProcessor) {
-        checkNotNull(renderPostProcessor);
-        mRenderer.setRenderPostProcessor(renderPostProcessor);
     }
 
     private void buildQuadTree(@NonNull List<T> clusterItems) {
@@ -196,51 +194,56 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
         return clusters;
     }
 
-    private void getClustersInsideBounds(@NonNull List<Cluster<T>> clusters,
+    private void getClustersInsideBounds(@NonNull final List<Cluster<T>> clusters,
                                          double startLatitude, double endLatitude,
                                          double startLongitude, double endLongitude,
-                                         double stepLatitude, double stepLongitude) {
-        long startX = (long) ((startLongitude + 180.0) / stepLongitude);
-        long startY = (long) ((90.0 - startLatitude) / stepLatitude);
+                                         final double stepLatitude, final double stepLongitude) {
+        final long startX = (long) ((startLongitude + 180.0) / stepLongitude);
+        final long startY = (long) ((90.0 - startLatitude) / stepLatitude);
 
-        long endX = (long) ((endLongitude + 180.0) / stepLongitude) + 1;
-        long endY = (long) ((90.0 - endLatitude) / stepLatitude) + 1;
+        final long endX = (long) ((endLongitude + 180.0) / stepLongitude) + 1;
+        final long endY = (long) ((90.0 - endLatitude) / stepLatitude) + 1;
 
-        for (long tileX = startX; tileX <= endX; tileX++) {
-            for (long tileY = startY; tileY <= endY; tileY++) {
-                double north = 90.0 - tileY * stepLatitude;
-                double west = tileX * stepLongitude - 180.0;
-                double south = north - stepLatitude;
-                double east = west + stepLongitude;
+        quadTreeReadLock(new Runnable() {
+            @Override
+            public void run() {
+                for (long tileX = startX; tileX <= endX; tileX++) {
+                    for (long tileY = startY; tileY <= endY; tileY++) {
+                        double north = 90.0 - tileY * stepLatitude;
+                        double west = tileX * stepLongitude - 180.0;
+                        double south = north - stepLatitude;
+                        double east = west + stepLongitude;
 
-                List<T> points = mQuadTree.queryRange(north, west, south, east);
+                        List<T> points = mQuadTree.queryRange(north, west, south, east);
 
-                if (points.isEmpty()) {
-                    continue;
-                }
+                        if (points.isEmpty()) {
+                            continue;
+                        }
 
-                if (points.size() >= mMinClusterSize) {
-                    double totalLatitude = 0;
-                    double totalLongitude = 0;
+                        if (points.size() >= mMinClusterSize) {
+                            double totalLatitude = 0;
+                            double totalLongitude = 0;
 
-                    for (T point : points) {
-                        totalLatitude += point.getLatitude();
-                        totalLongitude += point.getLongitude();
-                    }
+                            for (T point : points) {
+                                totalLatitude += point.getLatitude();
+                                totalLongitude += point.getLongitude();
+                            }
 
-                    double latitude = totalLatitude / points.size();
-                    double longitude = totalLongitude / points.size();
+                            double latitude = totalLatitude / points.size();
+                            double longitude = totalLongitude / points.size();
 
-                    clusters.add(new Cluster<>(latitude, longitude,
-                            points, north, west, south, east));
-                } else {
-                    for (T point : points) {
-                        clusters.add(new Cluster<>(point.getLatitude(), point.getLongitude(),
-                                Collections.singletonList(point), north, west, south, east));
+                            clusters.add(new Cluster<>(latitude, longitude,
+                                    points, north, west, south, east));
+                        } else {
+                            for (T point : points) {
+                                clusters.add(new Cluster<>(point.getLatitude(), point.getLongitude(),
+                                        Collections.singletonList(point), north, west, south, east));
+                            }
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
     private void quadTreeWriteLock(@NonNull Runnable runnable) {
@@ -271,11 +274,15 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
 
         @Override
         protected Void doInBackground(Void... params) {
-            mQuadTree.clear();
-            // Changed for loop to i
-            for (int i = 0; i < mClusterItems.size(); i++) {
-                mQuadTree.insert(mClusterItems.get(i));
-            }
+            quadTreeWriteLock(new Runnable() {
+                @Override
+                public void run() {
+                    mQuadTree.clear();
+                    for (T clusterItem : mClusterItems) {
+                        mQuadTree.insert(clusterItem);
+                    }
+                }
+            });
             return null;
         }
 
