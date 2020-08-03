@@ -46,11 +46,11 @@ class SampleClusterItem implements ClusterItem {
 }
 ```
 
-2. Create an instance of ClusterManager and set it as a camera idle listener using `GoogleMap.setOnCameraIdleListener(...)`:
+2. Create an instance of ClusterManager and set it as a camera idle listener using `HuaweiMap.setOnCameraIdleListener(...)`:
 
 ```java
-ClusterManager<SampleClusterItem> clusterManager = new ClusterManager<>(context, googleMap);
-googleMap.setOnCameraIdleListener(clusterManager);
+ClusterManager<SampleClusterItem> clusterManager = new ClusterManager<>(context, huaweiMap);
+huaweiMap.setOnCameraIdleListener(clusterManager);
 ```
 
 3. To add a callback that's invoked when a cluster or a cluster item is clicked, use `ClusterManager.setCallbacks(...)`:
