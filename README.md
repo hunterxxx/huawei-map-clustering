@@ -1,8 +1,11 @@
 # Huawei Map Clustering
 A high performance marker clustering library for Huawei Map
+Clustering folder is the library.
+App is the example, check it out for easy implementation.
 
 <img src="Screenshots/100k.gif" width="320" height="685">
 
+Explained in article:
 https://medium.com/@heydjbaby/100k-clustered-markers-with-huawei-map-ffcba4168727
 
 ## Motivation
@@ -52,28 +55,7 @@ class SampleClusterItem implements ClusterItem {
 ClusterManager<SampleClusterItem> clusterManager = new ClusterManager<>(context, huaweiMap);
 huaweiMap.setOnCameraIdleListener(clusterManager);
 ```
-
-3. To add a callback that's invoked when a cluster or a cluster item is clicked, use `ClusterManager.setCallbacks(...)`:
-
-```java
-clusterManager.setCallbacks(new ClusterManager.Callbacks<SampleClusterItem>() {
-            @Override
-            public boolean onClusterClick(@NonNull Cluster<SampleClusterItem> cluster) {
-                Log.d(TAG, "onClusterClick");
-                return false;
-            }
-
-            @Override
-            public boolean onClusterItemClick(@NonNull SampleClusterItem clusterItem) {
-                Log.d(TAG, "onClusterItemClick");
-                return false;
-            }
-        });
-```
-
-4. To customize the icons create an instance of `IconGenerator` and set it using `ClusterManager.setIconGenerator(...)`. You can also use the default implementation `DefaultIconGenerator` and customize the style of icons using `DefaultIconGenerator.setIconStyle(...)`.
-
-5. Populate ClusterManager with items using `ClusterManager.addItems(...)`:
+3. Populate ClusterManager with items using `ClusterManager.addItems(...)`:
 
 ```java
 List<SampleClusterItem> clusterItems = generateSampleClusterItems();
