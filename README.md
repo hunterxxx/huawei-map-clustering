@@ -62,7 +62,7 @@ huaweiMap.setOnCameraIdleListener(clusterManager);
 ```java
 List<MyItem> clusterItems = generateSampleClusterItems();
 clusterManager.addItems(clusterItems);
-
+```
 
 4. To add a callback that's invoked when a cluster or a cluster item is clicked, use `ClusterManager.setCallbacks(...)`:
 
