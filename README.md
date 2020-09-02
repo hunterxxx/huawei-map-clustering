@@ -84,8 +84,6 @@ clusterManager.setCallbacks(new ClusterManager.Callbacks<MyItem>() {
 
 5. To customize the icons create an instance of `IconGenerator` and set it using `ClusterManager.setIconGenerator(...)`. You can also use the default implementation `DefaultIconGenerator` and customize the style of icons using `DefaultIconGenerator.setIconStyle(...)`. Refer to CustomIconGenerator where I changed the cluster color via `CustomIconGenerator.createClusterBackground(...)`
 
-```
-
 ## Show your support
 This project is completely open source, feel free to make a pull request or report an issue.
 <br/>
