@@ -19,11 +19,11 @@ Why not use [Huawei built in .clusterable(true)](https://developer.huawei.com/co
 
 ```java
 
-class SampleClusterItem implements ClusterItem {
+class MyItem implements ClusterItem {
 
     private final LatLng location;
 
-    SampleClusterItem(@NonNull LatLng location) {
+    MyItem(@NonNull LatLng location) {
         this.location = location;
     }
 
@@ -54,14 +54,36 @@ class SampleClusterItem implements ClusterItem {
 2. Create an instance of ClusterManager and set it as a camera idle listener using `HuaweiMap.setOnCameraIdleListener(...)`:
 
 ```java
-ClusterManager<SampleClusterItem> clusterManager = new ClusterManager<>(context, huaweiMap);
+ClusterManager<MyItem> clusterManager = new ClusterManager<>(context, huaweiMap);
 huaweiMap.setOnCameraIdleListener(clusterManager);
 ```
 3. Populate ClusterManager with items using `ClusterManager.addItems(...)`:
 
 ```java
-List<SampleClusterItem> clusterItems = generateSampleClusterItems();
+List<MyItem> clusterItems = generateSampleClusterItems();
 clusterManager.addItems(clusterItems);
+
+
+4. To add a callback that's invoked when a cluster or a cluster item is clicked, use `ClusterManager.setCallbacks(...)`:
+
+```java
+clusterManager.setCallbacks(new ClusterManager.Callbacks<MyItem>() {
+            @Override
+            public boolean onClusterClick(@NonNull Cluster<MyItem> cluster) {
+                Log.d(TAG, "onClusterClick");
+                return false;
+            }
+
+            @Override
+            public boolean onClusterItemClick(@NonNull MyItem clusterItem) {
+                Log.d(TAG, "onClusterItemClick");
+                return false;
+            }
+        });
+```
+
+5. To customize the icons create an instance of `IconGenerator` and set it using `ClusterManager.setIconGenerator(...)`. You can also use the default implementation `DefaultIconGenerator` and customize the style of icons using `DefaultIconGenerator.setIconStyle(...)`. Refer to CustomIconGenerator where I changed the cluster color via `CustomIconGenerator.createClusterBackground(...)`
+
 ```
 
 ## Show your support
