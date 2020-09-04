@@ -51,6 +51,11 @@ public class DefaultIconGenerator<T extends ClusterItem> implements IconGenerato
         mIconStyle = Preconditions.checkNotNull(iconStyle);
     }
 
+    /**
+     * Create an icon for the given cluster item.
+     *
+     * @return the icon of the cluster
+     */
     @NonNull
     public BitmapDescriptor getClusterIcon(@NonNull Cluster<T> cluster) {
         int clusterBucket = getClusterIconBucket(cluster);
@@ -64,9 +69,14 @@ public class DefaultIconGenerator<T extends ClusterItem> implements IconGenerato
         return clusterIcon;
     }
 
+    /**
+     * Create an icon for the given marker
+     *
+     * @return the icon of the marker
+     */
     @NonNull
     @Override
-    public BitmapDescriptor getClusterItemIcon(@NonNull T clusterItem) {
+    public BitmapDescriptor getMarkerIcon(@NonNull T clusterItem) {
         if (mClusterItemIcon == null) {
             mClusterItemIcon = createClusterItemIcon();
         }
@@ -79,7 +89,7 @@ public class DefaultIconGenerator<T extends ClusterItem> implements IconGenerato
     }
 
     @NonNull
-    private BitmapDescriptor createClusterIcon(int clusterBucket) {
+    public BitmapDescriptor createClusterIcon(int clusterBucket) {
         @SuppressLint("InflateParams")
         TextView clusterIconView = (TextView) LayoutInflater.from(mContext)
                 .inflate(R.layout.map_cluster_icon, null);

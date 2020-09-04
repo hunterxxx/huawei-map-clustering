@@ -1,4 +1,0 @@
-#Wed Jul 01 09:47:14 CEST 2020
-base.0=C\:\\Users\\h00564074\\Downloads\\PushHunter2\\PushHunter2\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex

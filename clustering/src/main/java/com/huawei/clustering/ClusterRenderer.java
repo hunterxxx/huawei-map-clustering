@@ -158,7 +158,7 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
         if (clusterItems.size() > 1) {
             clusterIcon = mIconGenerator.getClusterIcon(cluster);
         } else {
-            clusterIcon = mIconGenerator.getClusterItemIcon(clusterItems.get(0));
+            clusterIcon = mIconGenerator.getMarkerIcon(clusterItems.get(0));
         }
 
         return Preconditions.checkNotNull(clusterIcon);
