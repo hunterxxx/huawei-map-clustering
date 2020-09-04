@@ -7,6 +7,7 @@ Article for SingleCluster:
 https://medium.com/@heydjbaby/100k-clustered-markers-with-huawei-map-ffcba4168727
 
 Article for MultipleCluster:
+https://medium.com/@heydjbaby/multiple-clusters-on-huawei-map-%EF%B8%8F-76237fc4469d
 
 |<img src="Screenshots/100k.gif" width="320" height="585">|<img src="Screenshots/multiple.gif" width="320" height="585">|
 |:---:|:---:|
