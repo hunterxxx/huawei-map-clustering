@@ -1,4 +1,3 @@
-rootProject.name='PushHunter'
-include ':app', ':clusterings'
+rootProject.name='ClusterDemo'
+include ':singleCluster', 'multipleClusters', ':clusterings'
 include ':clustering'
-include ':mylibrary'
