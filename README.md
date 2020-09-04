@@ -3,12 +3,14 @@ A high performance marker clustering library for Huawei Map.</br>
 Clustering folder is the library.</br>
 Have a look at SingleCluster & MultipleCluster folders for easy cluster implementation.
 
-|<img src="Screenshots/100k.gif" width="320" height="585">|<img src="https://miro.medium.com/max/262/1*0DUmGcxkFOpp6XDdY2Dalw.png" width="320" height="585">|<img src="https://miro.medium.com/max/291/1*bNHT0sDdBxaho2rpXJQi-A.png" width="320" height="400">|
-|:---:|:---:|:---:|
-| 100K Clustered Markers | Library needed | Demo App |
-
-Explained in article:
+Article for SingleCluster:
 https://medium.com/@heydjbaby/100k-clustered-markers-with-huawei-map-ffcba4168727
+
+Article for MultipleCluster:
+
+|<img src="Screenshots/100k.gif" width="320" height="585">|<img src="Screenshots/multiple.gif" width="320" height="585">|
+|:---:|:---:|
+| 100K Clustered Markers | 2 x 100k Clustered Markers | Demo App |
 
 ## Motivation
 Why not use [Huawei built in .clusterable(true)](https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/hms-map-drawonthemap#h2-1586915875534)? Because it's very slow for >100 markers, which causes ANRs. But this library can easily handle thousands of markers (the video above demonstrates the sample application with 100 000 markers running on Huawei P40 Lite).
