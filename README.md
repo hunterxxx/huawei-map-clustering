@@ -1,7 +1,7 @@
 # Huawei Map Clustering
 A high performance marker clustering library for Huawei Map.</br>
 Clustering folder is the library.</br>
-App is the example, check it out for easy implementation.
+Have a look at SingleCluster & MultipleCluster folders for easy cluster implementation.
 
 |<img src="Screenshots/100k.gif" width="320" height="585">|<img src="https://miro.medium.com/max/262/1*0DUmGcxkFOpp6XDdY2Dalw.png" width="320" height="585">|<img src="https://miro.medium.com/max/291/1*bNHT0sDdBxaho2rpXJQi-A.png" width="320" height="400">|
 |:---:|:---:|:---:|
