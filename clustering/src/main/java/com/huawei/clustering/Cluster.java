@@ -1,5 +1,7 @@
 package com.huawei.clustering;
 
+import com.huawei.hms.maps.model.LatLng;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class Cluster<T extends ClusterItem> {
     private final double south;
     private final double east;
 
+    private final LatLng latLng;
+
     Cluster(double latitude, double longitude, @NonNull List<T> items,
             double north, double west, double south, double east) {
         this.latitude = latitude;
@@ -26,6 +30,8 @@ public class Cluster<T extends ClusterItem> {
         this.west = west;
         this.south = south;
         this.east = east;
+
+        this.latLng = new LatLng(latitude, longitude);
     }
 
     /**
@@ -44,6 +50,15 @@ public class Cluster<T extends ClusterItem> {
      */
     public double getLongitude() {
         return longitude;
+    }
+
+    /**
+     * The LatLng based on latitude and longitude.
+     *
+     * @return the latLng of the cluster
+     */
+    public LatLng getLatLng() {
+        return latLng;
     }
 
     /**

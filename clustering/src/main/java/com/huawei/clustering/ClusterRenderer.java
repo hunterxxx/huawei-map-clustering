@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickListener {
+    private static final LatLngTypeEvaluator latLngTypeEvaluator = new LatLngTypeEvaluator();
+    private static final FastOutSlowInInterpolator fastOutSlowInInterpolator = new FastOutSlowInInterpolator();
 
     private static final int BACKGROUND_MARKER_Z_INDEX = 0;
 
@@ -52,7 +54,7 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
         if (markerTag instanceof Cluster) {
             //noinspection unchecked
             Cluster<T> cluster = (Cluster<T>) marker.getTag();
-            //noinspection ConstantConditions
+
             List<T> clusterItems = cluster.getItems();
 
             if (mCallbacks != null) {
@@ -106,8 +108,7 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
             Cluster<T> parentCluster = findParentCluster(mClusters, clusterToRemove.getLatitude(),
                     clusterToRemove.getLongitude());
             if (parentCluster != null) {
-                animateMarkerToLocation(markerToRemove, new LatLng(parentCluster.getLatitude(),
-                        parentCluster.getLongitude()), true);
+                animateMarkerToLocation(markerToRemove, parentCluster.getLatLng(), true);
             } else {
                 markerToRemove.remove();
             }
@@ -123,20 +124,19 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
             String markerTitle = getMarkerTitle(clusterToAdd);
             String markerSnippet = getMarkerSnippet(clusterToAdd);
 
-            Cluster parentCluster = findParentCluster(clustersToRemove, clusterToAdd.getLatitude(),
+            Cluster<T> parentCluster = findParentCluster(clustersToRemove, clusterToAdd.getLatitude(),
                     clusterToAdd.getLongitude());
             if (parentCluster != null) {
                 markerToAdd = mHuaweiMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(parentCluster.getLatitude(), parentCluster.getLongitude()))
+                        .position(parentCluster.getLatLng())
                         .icon(markerIcon)
                         .title(markerTitle)
                         .snippet(markerSnippet)
                         .zIndex(FOREGROUND_MARKER_Z_INDEX));
-                animateMarkerToLocation(markerToAdd,
-                        new LatLng(clusterToAdd.getLatitude(), clusterToAdd.getLongitude()), false);
+                animateMarkerToLocation(markerToAdd, clusterToAdd.getLatLng(), false);
             } else {
                 markerToAdd = mHuaweiMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(clusterToAdd.getLatitude(), clusterToAdd.getLongitude()))
+                        .position(clusterToAdd.getLatLng())
                         .icon(markerIcon)
                         .title(markerTitle)
                         .snippet(markerSnippet)
@@ -147,6 +147,8 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
             markerToAdd.setTag(clusterToAdd);
 
             mMarkers.put(clusterToAdd, new MarkerState(markerToAdd));
+
+            mRenderPostProcessor.postProcess(markerToAdd, clusterToAdd);
         }
     }
 
@@ -199,8 +201,8 @@ class ClusterRenderer<T extends ClusterItem> implements HuaweiMap.OnMarkerClickL
     private void animateMarkerToLocation(@NonNull final Marker marker, @NonNull LatLng targetLocation,
                                          final boolean removeAfter) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofObject(marker, "position",
-                new LatLngTypeEvaluator(), targetLocation);
-        objectAnimator.setInterpolator(new FastOutSlowInInterpolator());
+                latLngTypeEvaluator, targetLocation);
+        objectAnimator.setInterpolator(fastOutSlowInInterpolator);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
