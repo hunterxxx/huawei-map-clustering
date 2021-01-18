@@ -95,6 +95,16 @@ public class ClusterManager<T extends ClusterItem> implements HuaweiMap.OnCamera
     }
 
     /**
+     * Sets a custom render post processor thus replacing the default one.
+     *
+     * @param renderPostProcessor the render post processor that's used for modifying the marker being rendered
+     */
+    public void setRenderPostProcessor(@NonNull RenderPostProcessor<T> renderPostProcessor) {
+        Preconditions.checkNotNull(renderPostProcessor);
+        mRenderer.setRenderPostProcessor(renderPostProcessor);
+    }
+
+    /**
      * Sets a callback that's invoked when a cluster or a cluster item is clicked.
      *
      * @param callbacks the callback that's invoked when a cluster or an individual item is clicked.
