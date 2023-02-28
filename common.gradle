@@ -1,0 +1,18 @@
+ext {
+    common = [
+            applicationId    : "com.pushhunter.huawei",
+            minSdkVersion    : 21,
+            targetSdkVersion : 33,
+            compileSdkVersion: 33,
+            signingConfig    : [
+                    storeFile       : file('../HMSDemo.jks'),
+                    keyAlias        : 'HMSDemo',
+                    keyPassword     : 'hunter',
+                    storePassword   : 'hunter',
+                    v1SigningEnabled: true,
+                    v2SigningEnabled: true,
+            ]
+    ]
+
+}
+println("common: $common")
