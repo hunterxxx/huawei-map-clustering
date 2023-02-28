@@ -51,5 +51,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.huawei.hms:maps:6.7.1.302'
-    implementation project(path: ':clustering')
+    implementation 'com.huawei.clustering:1.0@aar'
+
 }
