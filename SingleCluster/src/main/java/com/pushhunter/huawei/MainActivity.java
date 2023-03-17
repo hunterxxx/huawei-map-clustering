@@ -9,6 +9,7 @@ import com.huawei.clustering.Cluster;
 import com.huawei.clustering.ClusterManager;
 import com.huawei.hms.maps.CameraUpdateFactory;
 import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.MapsInitializer;
 import com.huawei.hms.maps.OnMapReadyCallback;
 import com.huawei.hms.maps.SupportMapFragment;
 import com.huawei.hms.maps.model.LatLng;
@@ -30,6 +31,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapsInitializer.initialize(this);
         setContentView(R.layout.activity_maps);
         if (savedInstanceState == null) {
             setupMapFragment();

@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.huawei.agconnect'
+apply from : '../common.gradle'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "29.0.3"
+    compileSdkVersion common.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.pushhunter.huawei"
-        minSdkVersion 19
-        targetSdkVersion 28
+        applicationId common.applicationId
+        minSdkVersion common.minSdkVersion
+        targetSdkVersion common.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -17,12 +17,12 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('HMSDemo.jks')
-            keyAlias 'HMSDemo'
-            keyPassword 'hunter'
-            storePassword 'hunter'
-            v1SigningEnabled true
-            v2SigningEnabled true
+            storeFile common.signingConfig.storeFile
+            keyAlias common.signingConfig.keyAlias
+            keyPassword common.signingConfig.keyPassword
+            storePassword common.signingConfig.storePassword
+            v1SigningEnabled common.signingConfig.v1SigningEnabled
+            v2SigningEnabled common.signingConfig.v2SigningEnabled
         }
     }
 
@@ -41,11 +41,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.huawei.hms:maps:4.0.1.300'
-    implementation project(path: ':clustering')
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.huawei.hms:maps:6.7.1.302'
+    implementation 'com.huawei.clustering:1.0@aar'
+
 }

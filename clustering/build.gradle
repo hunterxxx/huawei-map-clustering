@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
 
+apply from : '../common.gradle'
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion common.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 29
+        minSdkVersion common.minSdkVersion
+        targetSdkVersion common.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -26,6 +27,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.huawei.hms:maps:4.0.1.300'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.huawei.hms:maps:6.7.1.302'
 }
